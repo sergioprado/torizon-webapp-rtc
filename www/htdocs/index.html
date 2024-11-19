@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTC Date and Time</title>
+    <script>
+        // Function to fetch and display the CGI output
+        function fetchRTCDateTime() {
+            fetch('/cgi-bin/rtc.cgi')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    // Display the CGI output in the target div
+                    document.getElementById('rtc-output').innerHTML = data;
+                })
+                .catch(error => {
+                    document.getElementById('rtc-output').innerHTML = `<p>Error: ${error.message}</p>`;
+                });
+        }
+
+        // Fetch the data every second
+        setInterval(fetchRTCDateTime, 1000);
+
+        // Fetch the data immediately on page load
+        window.onload = fetchRTCDateTime;
+    </script>
+</head>
+<body>
+    <h1>System RTC Date and Time</h1>
+    <div id="rtc-output">
+        <!-- CGI script output will be displayed here -->
+        <p>Loading...</p>
+    </div>
+</body>
+</html>
